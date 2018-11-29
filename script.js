@@ -1,9 +1,8 @@
-
 VK.init({
     apiId: 6764240
 });
 
-if (localStorage.data) {
+if (0) {
     //якщо є збереження то відтворити їх
     const data = JSON.parse(localStorage.data || '{}');
     const filter_friend = document.querySelector('.right-list').querySelector('.friends-list');
@@ -15,9 +14,6 @@ if (localStorage.data) {
     //якщо не було збережень то загрузити друзів
     loadFriends();
 }
-
-
-
 
 /* авторизація VK */
 function auth() {
@@ -81,21 +77,16 @@ function createLi(name, lastName, photo) {
     span.innerHTML = name + ' ' + lastName;
 
     let i = document.createElement('i');
-    i.classList.add('add');
-    i.classList.add('fas');
-    i.classList.add('fa-plus');
-
+    i.classList.add('add','fas','fa-plus');
 
     li.appendChild(img);
     li.appendChild(span);
     li.appendChild(i);
-
-
     return li;
 }
 
 /* Переміщення по списках*/
-function changeList(element,type,nextElement) {
+function changeList(element) {
     const filter_friend = document.querySelector('.right-list').querySelector('.friends-list');
     const all_friend = document.querySelector('.left-list').querySelector('.friends-list');
     const input_all = document.querySelector('.input-block').querySelector('.friend').querySelector('input');
@@ -109,21 +100,14 @@ function changeList(element,type,nextElement) {
         i.classList.add('delete', 'fas', 'fa-times');
         //перевірка чи є щось у фільтрі
         if (input_filter.value) {
-            i.parentNode.classList.add('hide'); 
+            i.parentNode.classList.add('hide');
         }
-        
-        
-        //перевірка чи переміщення способом DnD
-        if(type && nextElement){
-            console.log('nextElement',nextElement);
-            filter_friend.insertBefore(i.parentNode,nextElement);
-        }else{
-             filter_friend.appendChild(i.parentNode);
+        filter_friend.appendChild(i.parentNode);
+        filterList();
         return 0;
-        }
     }
-    
-    
+
+
 
     //нажато Х(delete)
     if (i.classList.contains('delete')) {
@@ -132,14 +116,9 @@ function changeList(element,type,nextElement) {
         if (input_all.value) {
             i.parentNode.classList.add('hide'); //перевірка чи є щось у фільтрі
         }
-        
-         //перевірка чи переміщення способом DnD
-        if(type && nextElement){
-            all_friend.insertBefore(i.parentNode,nextElement);
-        }else{
-             all_friend.appendChild(i.parentNode);
+        all_friend.appendChild(i.parentNode);
+        filterList();
         return 0;
-        }
     }
 }
 
@@ -175,8 +154,8 @@ function makeDnD(zones) {
                 //чи маємо ми щось з мишкою
                 if (currentDrag.source !== zone) {
                     //чи знаходиться над списками
-                    if (e.target.classList.contains('friends-list') || e.target.classList.contains('list-item')){
-                        changeList(currentDrag.node,true,e.target.nextElementSibling);
+                    if (e.target.classList.contains('friends-list') || e.target.classList.contains('list-item')) {
+                        changeList(currentDrag.node);
                     }
                 }
             }
@@ -232,7 +211,7 @@ save_btn.addEventListener('click', (e) => {
     const filter_friend = document.querySelector('.right-list').querySelector('.friends-list');
     const all_friend = document.querySelector('.left-list').querySelector('.friends-list');
 
-    check();//якщо є щось у фільрах збереження не відбудеться
+    check(); //якщо є щось у фільрах збереження не відбудеться
     function check() {
         if (input_all.value !== '' || input_filter.value !== '') {
             alert('Очитіть поля фільтрації');
@@ -252,34 +231,37 @@ save_btn.addEventListener('click', (e) => {
 
 
 /****Фільтрація списків ****/
-//const btn_filter = document.querySelector('.btn-filter');
-//
-//btn_filter.addEventListener('click',()=>{
-//    const filter_friend = document.querySelector('.right-list').querySelector('.friends-list');
-//    const all_friend = document.querySelector('.left-list').querySelector('.friends-list');
-//    console.log(filter_friend);
-//});
+function filterList() {
+    // елементи в списках 
+    const array_all_friend = document.querySelector('.left-list').querySelector('.friends-list').querySelectorAll('li');
+    const array_filter_friend = document.querySelector('.right-list').querySelector('.friends-list').querySelectorAll('li');
+    //ul
+    const all_friend = document.querySelector('.left-list').querySelector('.friends-list');
+    const filter_friend = document.querySelector('.right-list').querySelector('.friends-list');
 
+    let all_array = [];
+    let filter_array = [];
 
-//function sort(){
-//    const ul_list = document.querySelector('.right-list');
-//
-//var callback = function (allmutations){
-//    allmutations.map(function(mr){
-//       let array = mr.target.querySelectorAll('li');
-//        for(let i of array){
-//            console.log(i);
-//        }
-//        console.log(typeof(array));
-//    });
-//}
-//
-//
-//mo = new MutationObserver(callback),
-//    options = {
-//    'childList': true,
-//    'subtree': true
-//}
-//
-//mo.observe(ul_list, options);
-//}
+    //конвертація
+    for (let li of array_all_friend) {
+        all_array.push(li);
+    }
+    for (let li of array_filter_friend) {
+        filter_array.push(li);
+    }
+
+    //сортування
+    all_array.sort((a, b) => {
+        return a.innerText > b.innerText ? 1 : -1;
+    });
+    filter_array.sort((a, b) => {
+        return a.innerText > b.innerText ? 1 : -1;
+    });
+    //відображення на сторінці
+    all_array.forEach((element) => {
+        all_friend.appendChild(element);
+    });
+    filter_array.forEach((element) => {
+        filter_friend.appendChild(element);
+    });
+}
