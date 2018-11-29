@@ -192,7 +192,7 @@ width: 4px;
     justify-content: flex-end;
 }
 
-.btn-save{
+.btn{
     padding: 5px 15px;
     background: #ff8663;
     border: none;
@@ -203,13 +203,12 @@ width: 4px;
     transition:  .5s ease;
 }
 
-.btn-save:hover{
+.btn:hover{
     background: #cc6b50;
     color: #d6d6d6;
 }
-.btn-save:focus{
+.btn:focus{
     outline: none;
-    
 }
 
 
