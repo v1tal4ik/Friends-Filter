@@ -80,11 +80,18 @@ function createLi(name, lastName, photo) {
 function changeList(element) {
     const filter_friend = document.querySelector('.right-list').querySelector('.friends-list');
     const all_friend = document.querySelector('.left-list').querySelector('.friends-list');
+    const input_all = document.querySelector('.input-block').querySelector('.friend').querySelector('input');
+    const input_filter = document.querySelector('.input-block').querySelector('.filter').querySelector('input');
     let i = element.querySelector('i');
+    
+    
     
     if(i.classList.contains('add')){
         i.classList.remove('add','fas','fa-plus');
         i.classList.add('delete','fas','fa-times');
+        if(input_filter.value){
+            i.parentNode.classList.add('hide');//перевірка чи є щось у фільтрі
+        }
         filter_friend.appendChild(i.parentNode);
         return 0;
     }
@@ -92,6 +99,9 @@ function changeList(element) {
     if(i.classList.contains('delete')){
        i.classList.remove('delete','fas','fa-times');
             i.classList.add('add','fas','fa-plus');
+        if(input_all.value){
+            i.parentNode.classList.add('hide');//перевірка чи є щось у фільтрі
+        }
             all_friend.appendChild(i.parentNode);
          return 0;
        }
