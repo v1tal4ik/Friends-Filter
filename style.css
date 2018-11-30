@@ -207,8 +207,19 @@ width: 4px;
     background: #cc6b50;
     color: #d6d6d6;
 }
+
 .btn:focus{
-    outline: none;
+    animation: radial-pulse 1s ease-out;
+}
+
+@keyframes radial-pulse {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.5);
+  }
+ 
+  100% {
+    box-shadow: 0 0 0 40px rgba(0, 0, 0, 0);
+  }
 }
 
 

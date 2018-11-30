@@ -2,7 +2,7 @@ VK.init({
     apiId: 6764240
 });
 
-if (0) {
+if (localStorage.data) {
     //якщо є збереження то відтворити їх
     const data = JSON.parse(localStorage.data || '{}');
     const filter_friend = document.querySelector('.right-list').querySelector('.friends-list');
@@ -223,8 +223,6 @@ save_btn.addEventListener('click', (e) => {
             });
         }
     }
-
-
 });
 
 
